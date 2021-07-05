@@ -2,19 +2,67 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainFormController">
+<AnchorPane id="AnchorPane" prefHeight="296.0" prefWidth="670.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainFormController">
    <children>
-      <Label layoutX="202.0" layoutY="14.0" prefHeight="60.0" prefWidth="196.0" text="MAIN FORM" textAlignment="CENTER">
+      <Label layoutX="14.0" layoutY="14.0" text="Inventory Management System">
          <font>
-            <Font size="35.0" />
+            <Font size="16.0" />
          </font>
       </Label>
-      <Button layoutX="153.0" layoutY="306.0" mnemonicParsing="false" onAction="#toAddPartForm" text="Add Part Form">
-         <font>
-            <Font size="38.0" />
-         </font></Button>
+      <HBox layoutX="33.0" layoutY="62.0" spacing="25.0">
+         <children>
+            <Pane prefHeight="187.0" prefWidth="290.0" style="-fx-border-color: black; -fx-border-width: 1; -fx-border-radius: 25;">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="Parts" />
+                  <TextField layoutX="127.0" layoutY="10.0" />
+                  <TableView fx:id="allPartsTable" layoutX="14.0" layoutY="44.0" prefHeight="99.0" prefWidth="260.0">
+                    <columns>
+                      <TableColumn fx:id="partsIDCol" prefWidth="65.0" text="Part ID" />
+                      <TableColumn fx:id="partsNameCol" prefWidth="65.0" text="Part Name" />
+                        <TableColumn fx:id="partsStockCol" prefWidth="65.0" text="Inventory Level" />
+                        <TableColumn fx:id="partsPriceCol" prefWidth="65.0" text="Cost/Unit" />
+                    </columns>
+                  </TableView>
+                  <HBox layoutX="74.0" layoutY="148.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="partsAddButton" mnemonicParsing="false" onAction="#onPartsAdd" prefWidth="60.0" text="Add" />
+                        <Button mnemonicParsing="false" prefWidth="60.0" text="Modify" />
+                        <Button mnemonicParsing="false" prefWidth="60.0" text="Delete" />
+                     </children>
+                  </HBox>
+               </children>
+            </Pane>
+            <Pane prefHeight="187.0" prefWidth="290.0" style="-fx-border-color: black; -fx-border-width: 1; -fx-border-radius: 25;">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="Products" />
+                  <TextField layoutX="127.0" layoutY="10.0" />
+                  <TableView fx:id="allProductsTable" layoutX="15.0" layoutY="44.0" prefHeight="99.0" prefWidth="260.0">
+                     <columns>
+                        <TableColumn fx:id="productsIDCol" prefWidth="65.0" text="Product ID" />
+                        <TableColumn fx:id="productsNameCol" prefWidth="65.0" text="Product Name" />
+                        <TableColumn fx:id="productsStockCol" prefWidth="65.0" text="Inventory Level" />
+                        <TableColumn fx:id="productsPriceCol" prefWidth="65.0" text="Cost/Unit" />
+                     </columns>
+                  </TableView>
+                  <HBox layoutX="76.0" layoutY="148.0" spacing="10.0">
+                     <children>
+                        <Button mnemonicParsing="false" prefWidth="60.0" text="Add" />
+                        <Button mnemonicParsing="false" prefWidth="60.0" text="Modify" />
+                        <Button mnemonicParsing="false" prefWidth="60.0" text="Delete" />
+                     </children>
+                  </HBox>
+               </children>
+            </Pane>
+         </children>
+      </HBox>
+      <Button layoutX="577.0" layoutY="257.0" mnemonicParsing="false" prefWidth="60.0" text="Exit" />
    </children>
 </AnchorPane>
