@@ -35,7 +35,7 @@
                      <children>
                         <Button fx:id="partsAddButton" mnemonicParsing="false" onAction="#onPartsAdd" prefWidth="60.0" text="Add" />
                         <Button mnemonicParsing="false" prefWidth="60.0" text="Modify" />
-                        <Button mnemonicParsing="false" prefWidth="60.0" text="Delete" />
+                        <Button fx:id="partsDeleteButton" mnemonicParsing="false" onAction="#onPartsDelete" prefWidth="60.0" text="Delete" />
                      </children>
                   </HBox>
                </children>

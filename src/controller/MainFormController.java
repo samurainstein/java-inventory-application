@@ -21,6 +21,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.Inventory;
 import model.Part;
 
 /**
@@ -33,7 +34,7 @@ public class MainFormController implements Initializable {
     @FXML
     private TableView<Part> allPartsTable;
     @FXML
-    private TableColumn<?, ?> partsIDCol;
+    private TableColumn<Part, Integer> partsIDCol;
     @FXML
     private TableColumn<?, ?> partsNameCol;
     @FXML
@@ -52,29 +53,14 @@ public class MainFormController implements Initializable {
     private TableColumn<?, ?> productsStockCol;
     @FXML
     private TableColumn<?, ?> productsPriceCol;
-    
-    private ObservableList<Part> allParts = FXCollections.observableArrayList();
-    //private ObservableList<Product> allProducts = FXCollections.observableArrayList();
-    
     @FXML
-    public void onPartsAdd(ActionEvent actionEvent) throws IOException {
-        System.out.println("Add Parts Button Clicked");
-        Parent root = FXMLLoader.load(getClass().getResource("/view/AddPartForm.fxml"));
-        Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setTitle("Add Part Form");
-        stage.setScene(scene);
-        stage.show();
-    }
+    private Button partsDeleteButton;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        allPartsTable.setItems(allParts);
-        //allProducts.setItems(allProducts);
         
         //"id" tied to getId() method in Part class
         partsIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -87,8 +73,44 @@ public class MainFormController implements Initializable {
         //productsStockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
         //productsPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
         
+        allPartsTable.setItems(Inventory.getAllParts());
+        //allProducts.setItems(allProducts);
+        
     }    
-    
 
+    @FXML
+    public void onPartsAdd(ActionEvent actionEvent) throws IOException {
+        System.out.println("Add Parts Button Clicked");
+        Parent root = FXMLLoader.load(getClass().getResource("/view/AddPartForm.fxml"));
+        Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setTitle("Add Part Form");
+        stage.setScene(scene);
+        stage.show();
+    }
+    
+    @FXML
+    private void onPartsDelete(ActionEvent event) {
+        System.out.println("Delete button clicked");
+        
+        Part selectedPart = allPartsTable.getSelectionModel().getSelectedItem();
+        if (selectedPart == null){
+        //Add alert here 
+            return;
+        }
+        
+        //Ask if they want to delete
+        //if OK, delete
+        //if no, cancel
+        
+        //Inventory.getAllParts().remove(selectedPart);
+        //Inventory.deletePart(selectedPart);
+    }
+    
+    @FXML
+    public void lookupPartsHandler(ActionEvent event) {
+        
+    }
+    
     
 }
