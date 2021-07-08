@@ -16,9 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 /**
@@ -26,35 +24,22 @@ import javafx.stage.Stage;
  *
  * @author Eric
  */
-public class AddPartFormController implements Initializable {
+public class ModifyProductFormController implements Initializable {
 
     @FXML
-    private RadioButton radioInHouse;
+    private TextField addProductIDTF;
     @FXML
-    private ToggleGroup sourceToggle;
+    private TextField addProductNameTF;
     @FXML
-    private RadioButton radioOutsourced;
+    private TextField addProductInvTF;
     @FXML
-    private TextField addPartIDTF;
+    private TextField addProductPriceTF;
     @FXML
-    private TextField addPartNameTF;
-    @FXML
-    private TextField addPartInvTF;
-    @FXML
-    private TextField addPartPriceTF;
-    @FXML
-    private TextField addPartMaxTF;
-    @FXML
-    private TextField addPartMachineIDTF;
-    @FXML
-    private TextField addPartMinTF;
-    @FXML
-    private Button addPartSaveBu;
-    @FXML
-    private Button addPartCancelBu;
+    private TextField addProductMaxTF;
     @FXML
     private Label machineOrCompany;
-
+    @FXML
+    private TextField addProductMinTF;
 
     /**
      * Initializes the controller class.
@@ -62,18 +47,8 @@ public class AddPartFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-
-    @FXML
-    private void onRadioInHouse(ActionEvent event) {
-        machineOrCompany.setText("Machine ID");
-    }
-
-    @FXML
-    private void onRadioOutsourced(ActionEvent event) {
-        machineOrCompany.setText("Company Name");
-    }
-
+    }  
+    
     @FXML
     private void onCancel(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/MainForm.fxml"));

@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddPartFormController">
-   <children>
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ModifyPartFormController">
+<children>
       <HBox layoutX="39.0" layoutY="28.0" spacing="75.0">
          <children>
-            <Label text="Add Part" />
+            <Label text="Modify Part" />
             <RadioButton fx:id="radioInHouse" mnemonicParsing="false" onAction="#onRadioInHouse" selected="true" text="In-House">
                <toggleGroup>
                   <ToggleGroup fx:id="sourceToggle" />
@@ -27,37 +27,37 @@
             <HBox spacing="5.0">
                <children>
                   <Label prefWidth="86.0" text="ID" />
-                  <TextField fx:id="addPartIDTF" />
+                  <TextField fx:id="modPartIDTF" />
                </children>
             </HBox>
             <HBox spacing="5.0">
                <children>
                   <Label prefWidth="86.0" text="Name" />
-                  <TextField fx:id="addPartNameTF" />
+                  <TextField fx:id="modPartNameTF" />
                </children>
             </HBox>
             <HBox spacing="5.0">
                <children>
                   <Label prefWidth="86.0" text="Inv" />
-                  <TextField fx:id="addPartInvTF" />
+                  <TextField fx:id="modPartInvTF" />
                </children>
             </HBox>
             <HBox spacing="5.0">
                <children>
                   <Label prefWidth="86.0" text="Price/Cost" />
-                  <TextField fx:id="addPartPriceTF" />
+                  <TextField fx:id="modPartPriceTF" />
                </children>
             </HBox>
             <HBox spacing="5.0">
                <children>
                   <Label prefWidth="86.0" text="Max" />
-                  <TextField fx:id="addPartMaxTF" />
+                  <TextField fx:id="modPartMaxTF" />
                </children>
             </HBox>
             <HBox spacing="5.0">
                <children>
                   <Label fx:id="machineOrCompany" prefWidth="86.0" text="Machine ID" />
-                  <TextField fx:id="addPartMachineIDTF" />
+                  <TextField fx:id="modPartMachineIDTF" />
                </children>
             </HBox>
          </children>
@@ -65,13 +65,13 @@
       <HBox layoutX="320.0" layoutY="236.0" spacing="5.0">
          <children>
             <Label prefWidth="86.0" text="Min" />
-            <TextField fx:id="addPartMinTF" />
+            <TextField fx:id="modPartMinTF" />
          </children>
       </HBox>
       <HBox layoutX="335.0" layoutY="341.0" spacing="25.0">
          <children>
-            <Button fx:id="addPartSaveBu" mnemonicParsing="false" prefWidth="52.0" text="Save" />
-            <Button fx:id="addPartCancelBu" mnemonicParsing="false" onAction="#onCancel" prefWidth="52.0" text="Cancel" />
+            <Button fx:id="modPartSaveBu" mnemonicParsing="false" prefWidth="52.0" text="Save" />
+            <Button fx:id="modPartCancelBu" mnemonicParsing="false" onAction="#onCancel" prefWidth="52.0" text="Cancel" />
          </children>
       </HBox>
    </children>

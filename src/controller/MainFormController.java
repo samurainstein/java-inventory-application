@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Inventory;
@@ -55,6 +56,8 @@ public class MainFormController implements Initializable {
     private TableColumn<?, ?> productsPriceCol;
     @FXML
     private Button partsDeleteButton;
+    @FXML
+    private TextField partSearchText;
 
     /**
      * Initializes the controller class.
@@ -79,12 +82,23 @@ public class MainFormController implements Initializable {
     }    
 
     @FXML
-    public void onPartsAdd(ActionEvent actionEvent) throws IOException {
+    public void onPartsAdd(ActionEvent event) throws IOException {
         System.out.println("Add Parts Button Clicked");
         Parent root = FXMLLoader.load(getClass().getResource("/view/AddPartForm.fxml"));
-        Stage stage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setTitle("Add Part Form");
+        stage.setScene(scene);
+        stage.show();
+    }
+    
+    @FXML
+    public void onPartsModify(ActionEvent event) throws IOException {
+        System.out.println("Modify Parts Button Clicked");
+        Parent root = FXMLLoader.load(getClass().getResource("/view/ModifyPartForm.fxml"));
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setTitle("Modify Part Form");
         stage.setScene(scene);
         stage.show();
     }
@@ -108,9 +122,33 @@ public class MainFormController implements Initializable {
     }
     
     @FXML
-    public void lookupPartsHandler(ActionEvent event) {
-        
+    private void onProductsAdd(ActionEvent event) throws IOException {
+        System.out.println("Add Products Button Clicked");
+        Parent root = FXMLLoader.load(getClass().getResource("/view/AddProductForm.fxml"));
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setTitle("Add Products Form");
+        stage.setScene(scene);
+        stage.show();
     }
     
+    @FXML
+    private void onProductsModify(ActionEvent event) throws IOException {
+        System.out.println("Modify Products Button Clicked");
+        Parent root = FXMLLoader.load(getClass().getResource("/view/ModifyProductForm.fxml"));
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setTitle("Modify Products Form");
+        stage.setScene(scene);
+        stage.show();
+    }
     
+    public void lookupPartsHandler(ActionEvent event) {
+        //create queryTF in Scenebuilder?
+        String search = partSearchText.getText();
+        
+        ObservableList<Part> searchParts = Inventory.lookupPart(search);
+        allPartsTable.setItems(searchParts);
+    }
+
 }

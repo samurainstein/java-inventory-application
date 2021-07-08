@@ -26,7 +26,7 @@ import javafx.stage.Stage;
  *
  * @author Eric
  */
-public class AddPartFormController implements Initializable {
+public class ModifyPartFormController implements Initializable {
 
     @FXML
     private RadioButton radioInHouse;
@@ -35,26 +35,25 @@ public class AddPartFormController implements Initializable {
     @FXML
     private RadioButton radioOutsourced;
     @FXML
-    private TextField addPartIDTF;
+    private TextField modPartIDTF;
     @FXML
-    private TextField addPartNameTF;
+    private TextField modPartNameTF;
     @FXML
-    private TextField addPartInvTF;
+    private TextField modPartInvTF;
     @FXML
-    private TextField addPartPriceTF;
+    private TextField modPartPriceTF;
     @FXML
-    private TextField addPartMaxTF;
-    @FXML
-    private TextField addPartMachineIDTF;
-    @FXML
-    private TextField addPartMinTF;
-    @FXML
-    private Button addPartSaveBu;
-    @FXML
-    private Button addPartCancelBu;
+    private TextField modPartMaxTF;
     @FXML
     private Label machineOrCompany;
-
+    @FXML
+    private TextField modPartMachineIDTF;
+    @FXML
+    private TextField modPartMinTF;
+    @FXML
+    private Button modPartSaveBu;
+    @FXML
+    private Button modPartCancelBu;
 
     /**
      * Initializes the controller class.

@@ -20,40 +20,76 @@ public class Inventory {
     
     //Methods
     
+    /*
+    Do I need a constructor?
+    How do I initialize test data?
+    static  {
+        init();
+    }
+    
+    private static void init() {
+        allParts.add(new Inventory());
+    }
+    */
+    
     public static void addPart(Part newPart){
 
     }
     
-    //addProduct
+    /*public static void addProduct(Product newProduct){
+
+    }*/
     
-    //lookupPart ID
+    public static void lookupPart(Integer partID) {
+        
+    }
     
-    //lookupProduct ID
+    public static void lookupProduct(Integer productID) {
+        
+    }
     
     public static ObservableList<Part> lookupPart(String partialName) {
         ObservableList<Part> partNames = FXCollections.observableArrayList();
         
+        for(Part partSearch : getAllParts()) {
+            if(partSearch.getName().contains(partialName)) {
+                partNames.add(partSearch);
+            }
+        }
         
         return partNames;
     }
     
-    //lookupProduct Name
+    /*public static ObservableList<Product> lookupProduct(String partialName) {
+        ObservableList<Product> productNames = FXCollections.observableArrayList();
+        
+        
+        return productNames;
+    }*/
     
-    //updatePart
+    public static void updatePart(Integer partID, Part selectedPart){
+        
+    }
     
-    //updateProduct
+    /*public static void updateProduct(Integer partID, Product newProduct){
+        
+    }*/
     
-    //public static boolean deletePart(Part selectedPart){
-    //    
-    //}
+    /*public static boolean deletePart(Part selectedPart){
+        
+    }*/
     
-    //deleteProduct
+    /*public static boolean deleteProduct(Product selectedProduct){
+        
+    }*/
     
     public static ObservableList<Part> getAllParts() {
         return allParts;
     }
    
-    //getAllProducts
+    /*public static ObservableList<Product> getAllProducts() {
+        return allProducts;
+    }*/
 
     
 }
