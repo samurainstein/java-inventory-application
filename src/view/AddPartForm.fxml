@@ -27,7 +27,7 @@
             <HBox spacing="5.0">
                <children>
                   <Label prefWidth="86.0" text="ID" />
-                  <TextField fx:id="addPartIDTF" />
+                  <TextField fx:id="addPartIDTF" disable="true" promptText="AutoGen - Disabled" />
                </children>
             </HBox>
             <HBox spacing="5.0">

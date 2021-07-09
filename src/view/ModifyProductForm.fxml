@@ -9,14 +9,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="563.0" prefWidth="769.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16" fx:controller="controller.ModifyProductFormController">
+<AnchorPane id="AnchorPane" prefHeight="563.0" prefWidth="769.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ModifyProductFormController">
     <children>
         <VBox layoutX="64.0" layoutY="95.0" spacing="10.0">
          <children>
             <HBox spacing="5.0">
                <children>
                   <Label prefWidth="60.0" text="ID" />
-                  <TextField fx:id="addProductIDTF" />
+                  <TextField fx:id="addProductIDTF" disable="true" promptText="AutoGen - Disabled" />
                </children>
             </HBox>
             <HBox spacing="5.0">

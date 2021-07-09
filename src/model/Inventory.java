@@ -16,36 +16,50 @@ public class Inventory {
     
     //Members
     private static ObservableList<Part> allParts = FXCollections.observableArrayList();
-    //private static ObservableList<Product> allProducts = FXCollections.observableArrayList();
+    private static ObservableList<Product> allProducts = FXCollections.observableArrayList();
+    private static int nextPartID = 0;
+    private static int nextProductID = 0;
     
     //Methods
     
-    /*
-    Do I need a constructor?
-    How do I initialize test data?
-    static  {
-        init();
+    public static int getNextPartID() {
+        nextPartID += 1;
+        return nextPartID;
     }
     
-    private static void init() {
-        allParts.add(new Inventory());
+    public static int getNextProductID() {
+        nextProductID += 1;
+        return nextProductID;
     }
-    */
     
     public static void addPart(Part newPart){
-
+        allParts.add(newPart);
     }
     
-    /*public static void addProduct(Product newProduct){
-
-    }*/
-    
-    public static void lookupPart(Integer partID) {
-        
+    public static void addProduct(Product newProduct){
+        allProducts.add(newProduct);
     }
     
-    public static void lookupProduct(Integer productID) {
-        
+    public static Part lookupPart(Integer partID) {
+        ObservableList<Part> allParts = getAllParts();
+        for(int i = 0; i < allParts.size(); i++) {
+            Part partCompare = allParts.get(i);
+            if(partCompare.getId() == partID) {
+                return partCompare;
+            }
+        }
+        return null;  
+    }
+    
+    public static Product lookupProduct(Integer productID) {
+        ObservableList<Product> allProducts = getAllProducts();
+        for(int i = 0; i < allProducts.size(); i++) {
+            Product productCompare = allProducts.get(i);
+            if(productCompare.getId() == productID) {
+                return productCompare;
+            }
+        }
+        return null;
     }
     
     public static ObservableList<Part> lookupPart(String partialName) {
@@ -55,41 +69,57 @@ public class Inventory {
             if(partSearch.getName().contains(partialName)) {
                 partNames.add(partSearch);
             }
-        }
-        
+        } 
         return partNames;
     }
     
-    /*public static ObservableList<Product> lookupProduct(String partialName) {
+    public static ObservableList<Product> lookupProduct(String partialName) {
         ObservableList<Product> productNames = FXCollections.observableArrayList();
         
+        for(Product productSearch : getAllProducts()) {
+            if(productSearch.getName().contains(partialName)) {
+                productNames.add(productSearch);
+            }
+        }
         
         return productNames;
-    }*/
+    }
     
     public static void updatePart(Integer partID, Part selectedPart){
         
     }
     
-    /*public static void updateProduct(Integer partID, Product newProduct){
+    public static void updateProduct(Integer partID, Product newProduct){
         
-    }*/
+    }
     
-    /*public static boolean deletePart(Part selectedPart){
-        
-    }*/
+    public static boolean deletePart(Part selectedPart){
+        //Add Code Here
+        //Ask if they want to delete
+        //if OK, delete
+        //if no, cancel
+        boolean deleteConfirm = false;
+        Inventory.getAllParts().remove(selectedPart);
+        return deleteConfirm;
+    }
     
-    /*public static boolean deleteProduct(Product selectedProduct){
+    public static boolean deleteProduct(Product selectedProduct){
+        //Add Code Here
+        //Ask if they want to delete
+        //if OK, delete
+        //if no, cancel
+        boolean deleteConfirm = false;
         
-    }*/
+        return deleteConfirm;
+    }
     
     public static ObservableList<Part> getAllParts() {
         return allParts;
     }
    
-    /*public static ObservableList<Product> getAllProducts() {
+    public static ObservableList<Product> getAllProducts() {
         return allProducts;
-    }*/
+    }
 
     
 }

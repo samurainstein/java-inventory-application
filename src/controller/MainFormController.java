@@ -21,9 +21,15 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
+import model.InHouse;
 import model.Inventory;
+import model.Outsourced;
 import model.Part;
+import model.Product;
 
 /**
  * FXML Controller class
@@ -45,19 +51,21 @@ public class MainFormController implements Initializable {
     @FXML
     private Button partsAddButton;
     @FXML
-    private TableView<?> allProductsTable;
+    private TableView<Product> allProductsTable;
     @FXML
-    private TableColumn<?, ?> productsIDCol;
+    private TableColumn<Product, Integer> productsIDCol;
     @FXML
-    private TableColumn<?, ?> productsNameCol;
+    private TableColumn<Product, String> productsNameCol;
     @FXML
-    private TableColumn<?, ?> productsStockCol;
+    private TableColumn<Product, Integer> productsStockCol;
     @FXML
-    private TableColumn<?, ?> productsPriceCol;
+    private TableColumn<Product, Double> productsPriceCol;
     @FXML
     private Button partsDeleteButton;
     @FXML
     private TextField partSearchText;
+    @FXML
+    private TextField productSearchText;
 
     /**
      * Initializes the controller class.
@@ -71,14 +79,24 @@ public class MainFormController implements Initializable {
         partsStockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
         partsPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
         
-        //productsIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        //productsNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        //productsStockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        //productsPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+        productsIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        productsNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        productsStockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        productsPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
         
         allPartsTable.setItems(Inventory.getAllParts());
-        //allProducts.setItems(allProducts);
+        allProductsTable.setItems(Inventory.getAllProducts());
         
+        //Test Data
+        Inventory.addPart(new InHouse(Inventory.getNextPartID(), "dart", .50, 5, 0, 10, 101));
+        Inventory.addPart(new InHouse(Inventory.getNextPartID(), "mart", .50, 5, 0, 10, 101));
+        Inventory.addPart(new Outsourced(Inventory.getNextPartID(), "cart", .50, 5, 0, 10, "company 1"));
+        Inventory.addPart(new Outsourced(Inventory.getNextPartID(), "starter", .50, 5, 0, 10, "company 2"));
+        
+        Inventory.addProduct(new Product(Inventory.getNextProductID(), "snare", .50, 5, 0, 10));
+        Inventory.addProduct(new Product(Inventory.getNextProductID(), "dare", .50, 5, 0, 10));
+        Inventory.addProduct(new Product(Inventory.getNextProductID(), "hare", .50, 5, 0, 10));
+        Inventory.addProduct(new Product(Inventory.getNextProductID(), "rare", .50, 5, 0, 10));
     }    
 
     @FXML
@@ -109,16 +127,16 @@ public class MainFormController implements Initializable {
         
         Part selectedPart = allPartsTable.getSelectionModel().getSelectedItem();
         if (selectedPart == null){
-        //Add alert here 
+            //JOptionPane.showMessageDialog(null, "Please Select a Part");
             return;
         }
         
-        //Ask if they want to delete
-        //if OK, delete
-        //if no, cancel
+        boolean deleteConfirm = Inventory.deletePart(selectedPart);
+        if(deleteConfirm)
+            JOptionPane.showMessageDialog(null, "Part was deleted");
         
-        //Inventory.getAllParts().remove(selectedPart);
-        //Inventory.deletePart(selectedPart);
+        else if(!deleteConfirm)
+            return;
     }
     
     @FXML
@@ -142,13 +160,40 @@ public class MainFormController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-    
-    public void lookupPartsHandler(ActionEvent event) {
-        //create queryTF in Scenebuilder?
-        String search = partSearchText.getText();
-        
-        ObservableList<Part> searchParts = Inventory.lookupPart(search);
-        allPartsTable.setItems(searchParts);
+
+    @FXML
+    private void onPartSearch(KeyEvent event) {
+        if(event.getCode().equals(KeyCode.ENTER)) {
+            String searchText = partSearchText.getText();
+            ObservableList<Part> searchParts = Inventory.lookupPart(searchText);
+            allPartsTable.setItems(searchParts);
+            
+            if(searchParts.size() == 0) {
+                int partID = Integer.parseInt(searchText);
+                Part partIDSearch = Inventory.lookupPart(partID);
+                if(partIDSearch != null) {
+                    searchParts.add(partIDSearch);
+                }
+            }
+        }
     }
+
+    @FXML
+    private void onProductSearch(KeyEvent event) {
+        if(event.getCode().equals(KeyCode.ENTER)) {
+            String searchText = productSearchText.getText();
+            ObservableList<Product> searchProduct = Inventory.lookupProduct(searchText);
+            allProductsTable.setItems(searchProduct);
+            
+            if(searchProduct.size() == 0) {
+                int productID = Integer.parseInt(searchText);
+                Product productIDSearch = Inventory.lookupProduct(productID);
+                if(productIDSearch != null) {
+                    searchProduct.add(productIDSearch);
+                }
+            }
+        }
+    }
+    
 
 }
