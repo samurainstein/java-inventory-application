@@ -46,11 +46,11 @@ public class MainFormController implements Initializable {
     @FXML
     private TableColumn<Part, Integer> partsIDCol;
     @FXML
-    private TableColumn<?, ?> partsNameCol;
+    private TableColumn<Part, String> partsNameCol;
     @FXML
-    private TableColumn<?, ?> partsStockCol;
+    private TableColumn<Part, Integer> partsStockCol;
     @FXML
-    private TableColumn<?, ?> partsPriceCol;
+    private TableColumn<Part, Double> partsPriceCol;
     @FXML
     private Button partsAddButton;
     @FXML
@@ -90,7 +90,8 @@ public class MainFormController implements Initializable {
         allPartsTable.setItems(Inventory.getAllParts());
         allProductsTable.setItems(Inventory.getAllProducts());
         
-        //Test Data
+        /*
+        Test Data
         
         Inventory.addPart(new InHouse(Inventory.getNextPartID(), "dart", .50, 5, 0, 10, 101));
         Inventory.addPart(new InHouse(Inventory.getNextPartID(), "mart", .50, 5, 0, 10, 101));
@@ -101,6 +102,7 @@ public class MainFormController implements Initializable {
         Inventory.addProduct(new Product(Inventory.getNextProductID(), "dare", .50, 5, 0, 10));
         Inventory.addProduct(new Product(Inventory.getNextProductID(), "hare", .50, 5, 0, 10));
         Inventory.addProduct(new Product(Inventory.getNextProductID(), "rare", .50, 5, 0, 10));
+        */
     }    
 
     @FXML

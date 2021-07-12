@@ -82,15 +82,16 @@ public class Product {
     }
     
     public void addAssociatedPart(Part part){
-        //ADD CODE HERE
+        associatedParts.add(part);
     }
-    /*
-    public boolean deleteAssociatedPart(Part selectedAssociatedPart) {
-        return; ADD CODE HERE
-    }
-    */
     
-    public ObservableList<Part> getAllAsscoiatedParts() {
+    public boolean deleteAssociatedPart(Part selectedAssociatedPart) {
+        //FIX THIS
+        return true;
+    }
+    
+    
+    public ObservableList<Part> getAllAssociatedParts() {
         return associatedParts;
     }
 }
