@@ -20,6 +20,10 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
+import model.InHouse;
+import model.Inventory;
+import model.Part;
+import model.Product;
 
 /**
  * FXML Controller class
@@ -54,14 +58,37 @@ public class ModifyPartFormController implements Initializable {
     private Button modPartSaveBu;
     @FXML
     private Button modPartCancelBu;
-
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        //modPartNameTF.setText(part.getName());
     }    
+    
+    //Members
+    private Part part;
+    
+    //Methods
+    public void passPartData(Part part) {
+        //FIX THIS
+        this.part = part;
+        modPartIDTF.setText(Integer.toString(part.getId()));
+        modPartNameTF.setText(part.getName());
+        modPartInvTF.setText(Integer.toString(part.getStock()));
+        modPartPriceTF.setText(Double.toString(part.getPrice()));
+        modPartMaxTF.setText(Integer.toString(part.getMax()));
+        modPartMinTF.setText(Integer.toString(part.getMin()));
+        
+        if(part instanceof InHouse) {
+            radioInHouse.setSelected(true);
+            //modPartMachineIDTF.setText(Integer.toString(InHouse.getMachineID()));   
+
+        }
+        
+        
+    }
 
     @FXML
     private void onRadioInHouse(ActionEvent event) {

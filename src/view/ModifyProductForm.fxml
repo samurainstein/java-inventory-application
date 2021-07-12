@@ -16,31 +16,31 @@
             <HBox spacing="5.0">
                <children>
                   <Label prefWidth="60.0" text="ID" />
-                  <TextField fx:id="addProductIDTF" disable="true" promptText="AutoGen - Disabled" />
+                  <TextField fx:id="modProductIDTF" disable="true" promptText="AutoGen - Disabled" />
                </children>
             </HBox>
             <HBox spacing="5.0">
                <children>
                   <Label prefWidth="60.0" text="Name" />
-                  <TextField fx:id="addProductNameTF" />
+                  <TextField fx:id="modProductNameTF" />
                </children>
             </HBox>
             <HBox spacing="5.0">
                <children>
                   <Label prefWidth="60.0" text="Inv" />
-                  <TextField fx:id="addProductInvTF" prefWidth="65.0" />
+                  <TextField fx:id="modProductInvTF" prefWidth="65.0" />
                </children>
             </HBox>
             <HBox spacing="5.0">
                <children>
                   <Label prefWidth="60.0" text="Price" />
-                  <TextField fx:id="addProductPriceTF" prefWidth="65.0" />
+                  <TextField fx:id="modProductPriceTF" prefWidth="65.0" />
                </children>
             </HBox>
             <HBox spacing="5.0">
                <children>
                   <Label prefWidth="60.0" text="Max" />
-                  <TextField fx:id="addProductMaxTF" prefWidth="65.0" />
+                  <TextField fx:id="modProductMaxTF" prefWidth="65.0" />
                </children>
             </HBox>
          </children>
@@ -48,7 +48,7 @@
       <HBox layoutX="228.0" layoutY="235.0" spacing="5.0">
          <children>
             <Label fx:id="machineOrCompany" prefWidth="60.0" text="Min" />
-            <TextField fx:id="addProductMinTF" prefWidth="65.0" />
+            <TextField fx:id="modProductMinTF" prefWidth="65.0" />
          </children>
       </HBox>
       <Label layoutX="36.0" layoutY="35.0" text="Modify Product" />

@@ -94,13 +94,17 @@ public class Inventory {
     }
     
     public static boolean deletePart(Part selectedPart){
-        //Add Code Here
-        //Ask if they want to delete
-        //if OK, delete
-        //if no, cancel
+        //FIX THIS
         boolean deleteConfirm = false;
-        Inventory.getAllParts().remove(selectedPart);
-        return deleteConfirm;
+        try {
+            Inventory.getAllParts().remove(selectedPart);
+            deleteConfirm = true;
+            return deleteConfirm;
+        }
+        catch(NullPointerException exception) {
+            return deleteConfirm;
+        }
+        
     }
     
     public static boolean deleteProduct(Product selectedProduct){

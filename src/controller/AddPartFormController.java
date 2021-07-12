@@ -14,12 +14,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
+import model.InHouse;
+import model.Inventory;
+import model.Outsourced;
 
 /**
  * FXML Controller class
@@ -45,8 +49,6 @@ public class AddPartFormController implements Initializable {
     @FXML
     private TextField addPartMaxTF;
     @FXML
-    private TextField addPartMachineIDTF;
-    @FXML
     private TextField addPartMinTF;
     @FXML
     private Button addPartSaveBu;
@@ -54,6 +56,8 @@ public class AddPartFormController implements Initializable {
     private Button addPartCancelBu;
     @FXML
     private Label machineOrCompany;
+    @FXML
+    private TextField addPartMachOrCompTF;
 
 
     /**
@@ -82,6 +86,41 @@ public class AddPartFormController implements Initializable {
         stage.setTitle("Inventory Application");
         stage.setScene(scene);
         stage.show();
+    }
+
+    @FXML
+    private void onSave(ActionEvent event) throws IOException {
+        try {
+            int ID = Inventory.getNextPartID();
+            String name = addPartNameTF.getText();
+            double price = Double.parseDouble(addPartPriceTF.getText());
+            int stock = Integer.parseInt(addPartInvTF.getText());
+            int min = Integer.parseInt(addPartMinTF.getText());
+            int max = Integer.parseInt(addPartMaxTF.getText()); 
+            
+            if(radioInHouse.isSelected()) {
+                int machID = Integer.parseInt(addPartMachOrCompTF.getText());
+                Inventory.addPart(new InHouse(ID, name, price, stock, min, max, machID));
+            }
+            else {
+                String company = addPartMachOrCompTF.getText();
+                Inventory.addPart(new Outsourced (ID, name, price, stock, max, min, company));    
+            }
+            
+            Parent root = FXMLLoader.load(getClass().getResource("/view/MainForm.fxml"));
+            Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setTitle("Inventory Application");
+            stage.setScene(scene);
+            stage.show();
+        }
+
+        catch(NumberFormatException exception) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Entry");
+            alert.setContentText("Please enter a valid value for each field");
+            alert.showAndWait();
+        }
     }
     
 }

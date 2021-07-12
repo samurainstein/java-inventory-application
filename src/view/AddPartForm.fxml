@@ -57,7 +57,7 @@
             <HBox spacing="5.0">
                <children>
                   <Label fx:id="machineOrCompany" prefWidth="86.0" text="Machine ID" />
-                  <TextField fx:id="addPartMachineIDTF" />
+                  <TextField fx:id="addPartMachOrCompTF" />
                </children>
             </HBox>
          </children>
@@ -70,7 +70,7 @@
       </HBox>
       <HBox layoutX="335.0" layoutY="341.0" spacing="25.0">
          <children>
-            <Button fx:id="addPartSaveBu" mnemonicParsing="false" prefWidth="52.0" text="Save" />
+            <Button fx:id="addPartSaveBu" mnemonicParsing="false" onAction="#onSave" prefWidth="52.0" text="Save" />
             <Button fx:id="addPartCancelBu" mnemonicParsing="false" onAction="#onCancel" prefWidth="52.0" text="Cancel" />
          </children>
       </HBox>

@@ -7,6 +7,7 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +17,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -88,6 +91,7 @@ public class MainFormController implements Initializable {
         allProductsTable.setItems(Inventory.getAllProducts());
         
         //Test Data
+        
         Inventory.addPart(new InHouse(Inventory.getNextPartID(), "dart", .50, 5, 0, 10, 101));
         Inventory.addPart(new InHouse(Inventory.getNextPartID(), "mart", .50, 5, 0, 10, 101));
         Inventory.addPart(new Outsourced(Inventory.getNextPartID(), "cart", .50, 5, 0, 10, "company 1"));
@@ -113,30 +117,51 @@ public class MainFormController implements Initializable {
     @FXML
     public void onPartsModify(ActionEvent event) throws IOException {
         System.out.println("Modify Parts Button Clicked");
-        Parent root = FXMLLoader.load(getClass().getResource("/view/ModifyPartForm.fxml"));
-        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setTitle("Modify Part Form");
-        stage.setScene(scene);
-        stage.show();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ModifyPartForm.fxml"));
+            Parent root = loader.load();
+            ModifyPartFormController modPartCont = loader.getController();
+            modPartCont.passPartData(allPartsTable.getSelectionModel().getSelectedItem());
+            //Parent root = FXMLLoader.load(getClass().getResource("/view/ModifyPartForm.fxml"));
+            Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setTitle("Modify Part Form");
+            stage.setScene(scene);
+            stage.show();
+        }
+        catch(NullPointerException exception) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Selection");
+            alert.setContentText("Please select a part");
+            alert.showAndWait();
+        }
     }
     
     @FXML
     private void onPartsDelete(ActionEvent event) {
-        System.out.println("Delete button clicked");
+        //FIX THIS
+        System.out.println("Delete part button clicked");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this part?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.isPresent() && result.get() == ButtonType.OK) { 
         
-        Part selectedPart = allPartsTable.getSelectionModel().getSelectedItem();
-        if (selectedPart == null){
-            //JOptionPane.showMessageDialog(null, "Please Select a Part");
-            return;
+            Part selectedPart = allPartsTable.getSelectionModel().getSelectedItem();
+            
+            if (selectedPart == null){
+                JOptionPane.showMessageDialog(null, "Please Select a Part");
+                return;
+            }
+            
+            boolean deleteConfirm = Inventory.deletePart(selectedPart);
+            if(deleteConfirm)
+                JOptionPane.showMessageDialog(null, "Part was deleted");
+            /*
+            else if(!deleteConfirm){
+                JOptionPane.showMessageDialog(null, "Part not found");
+                return;
+            }
+            */
         }
-        
-        boolean deleteConfirm = Inventory.deletePart(selectedPart);
-        if(deleteConfirm)
-            JOptionPane.showMessageDialog(null, "Part was deleted");
-        
-        else if(!deleteConfirm)
-            return;
     }
     
     @FXML
@@ -153,12 +178,35 @@ public class MainFormController implements Initializable {
     @FXML
     private void onProductsModify(ActionEvent event) throws IOException {
         System.out.println("Modify Products Button Clicked");
-        Parent root = FXMLLoader.load(getClass().getResource("/view/ModifyProductForm.fxml"));
-        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setTitle("Modify Products Form");
-        stage.setScene(scene);
-        stage.show();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ModifyProductForm.fxml"));
+            Parent root = loader.load();
+            ModifyProductFormController modProductCont = loader.getController();
+            modProductCont.passProductData(allProductsTable.getSelectionModel().getSelectedItem());
+            //Parent root = FXMLLoader.load(getClass().getResource("/view/ModifyProductForm.fxml"));
+            Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setTitle("Modify Products Form");
+            stage.setScene(scene);
+            stage.show();
+        }
+        catch(NullPointerException exception) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Selection");
+            alert.setContentText("Please select a product");
+            alert.showAndWait();
+        }
+    }
+    
+    @FXML
+    private void onProductsDelete(ActionEvent event) {
+        //FIX THIS
+        System.out.println("Delete product button clicked");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this product?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.isPresent() && result.get() == ButtonType.OK) { 
+            
+        }
     }
 
     @FXML
@@ -194,6 +242,8 @@ public class MainFormController implements Initializable {
             }
         }
     }
+
+
     
 
 }

@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Product;
 
 /**
  * FXML Controller class
@@ -27,19 +28,19 @@ import javafx.stage.Stage;
 public class ModifyProductFormController implements Initializable {
 
     @FXML
-    private TextField addProductIDTF;
+    private TextField modProductIDTF;
     @FXML
-    private TextField addProductNameTF;
+    private TextField modProductNameTF;
     @FXML
-    private TextField addProductInvTF;
+    private TextField modProductInvTF;
     @FXML
-    private TextField addProductPriceTF;
+    private TextField modProductPriceTF;
     @FXML
-    private TextField addProductMaxTF;
+    private TextField modProductMaxTF;
+    @FXML
+    private TextField modProductMinTF;
     @FXML
     private Label machineOrCompany;
-    @FXML
-    private TextField addProductMinTF;
 
     /**
      * Initializes the controller class.
@@ -48,6 +49,21 @@ public class ModifyProductFormController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }  
+    
+    //Members
+    private Product product;
+    
+    //Methods
+    
+    public void passProductData(Product product) {
+        this.product = product;
+            modProductIDTF.setText(Integer.toString(product.getId()));
+            modProductNameTF.setText(product.getName());
+            modProductInvTF.setText(Integer.toString(product.getStock()));
+            modProductPriceTF.setText(Double.toString(product.getPrice()));
+            modProductMaxTF.setText(Integer.toString(product.getMax()));
+            modProductMinTF.setText(Integer.toString(product.getMin()));
+    }
     
     @FXML
     private void onCancel(ActionEvent event) throws IOException {
