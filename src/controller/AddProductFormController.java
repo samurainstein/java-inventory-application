@@ -7,7 +7,9 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -25,6 +28,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
 import model.Inventory;
 import model.Part;
 import model.Product;
@@ -72,7 +76,8 @@ public class AddProductFormController implements Initializable {
     private TableColumn<Part, Double> assocPartsPriceCol;
     @FXML
     private TableView<Part> assocPartsTable;
-
+    
+  
     /**
      * Initializes the controller class.
      */
@@ -89,7 +94,12 @@ public class AddProductFormController implements Initializable {
         assocPartsPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
         
         allPartsTable.setItems(Inventory.getAllParts());
+        assocPartsTable.setItems(assocParts);
     }    
+    
+    //Members
+    private Product product = new Product(0,"", 0, 0, 0, 0);
+    private ObservableList<Part> assocParts = FXCollections.observableArrayList();
 
     @FXML
     private void onCancel(ActionEvent event) throws IOException {
@@ -109,10 +119,15 @@ public class AddProductFormController implements Initializable {
             allPartsTable.setItems(searchParts);
             
             if(searchParts.size() == 0) {
-                int partID = Integer.parseInt(searchText);
-                Part partIDSearch = Inventory.lookupPart(partID);
-                if(partIDSearch != null) {
-                    searchParts.add(partIDSearch);
+                try {
+                    int partID = Integer.parseInt(searchText);
+                    Part partIDSearch = Inventory.lookupPart(partID);
+                    if(partIDSearch != null) {
+                        searchParts.add(partIDSearch);
+                    }
+                }
+                catch(NumberFormatException exception) {
+                    JOptionPane.showMessageDialog(null, "No parts were found");
                 }
             }
         }
@@ -120,16 +135,22 @@ public class AddProductFormController implements Initializable {
 
     @FXML
     private void onAdd(ActionEvent event) {
-        //FIX THIS
-        //Product.addAssociatedPart(allPartsTable.getSelectionModel().getSelectedItem());
-        //assocPartsTable.getItems().add(allPartsTable.getSelectionModel().getSelectedItem());    
+        Part addAssociatedPart = allPartsTable.getSelectionModel().getSelectedItem();
+        product.addAssociatedPart(addAssociatedPart);
+        assocPartsTable.setItems(product.getAllAssociatedParts());   
     }
 
     @FXML
     private void onRemove(ActionEvent event) {
-        //FIX THIS
-        //Product.deleteAssociatedPart(assocPartsTable.getSelectionModel().getSelectedItem());
-        //assocPartsTable.getItems().remove(assocPartsTable.getSelectionModel().getSelectedItem());    
+        Part deleteAssociatedPart = assocPartsTable.getSelectionModel().getSelectedItem();
+        if(deleteAssociatedPart == null) {
+            return;
+        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to remove this part?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.isPresent() && result.get() == ButtonType.OK) { 
+            product.deleteAssociatedPart(deleteAssociatedPart);
+        }     
     }
 
     @FXML
@@ -141,8 +162,34 @@ public class AddProductFormController implements Initializable {
             int stock = Integer.parseInt(addProductInvTF.getText());
             int min = Integer.parseInt(addProductMinTF.getText());
             int max = Integer.parseInt(addProductMaxTF.getText()); 
+            
+            if(max < min) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Entry");
+                alert.setContentText("Min should be less than max");
+                alert.showAndWait();
+                return;
+            }
 
-            Inventory.addProduct(new Product(ID, name, price, stock, min, max));
+            if(stock > max || stock < min) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Entry");
+                alert.setContentText("Inventory amount must be between max and min");
+                alert.showAndWait();
+                return;
+            }
+            
+            product.setId(ID);
+            product.setName(name);
+            product.setStock(stock);
+            product.setPrice(price);
+            product.setMax(max);
+            product.setMin(min);
+            Inventory.addProduct(product);
+            
+            //for(Part associatedPart : assocParts) {
+            //    product.addAssociatedPart(associatedPart);
+            //}
             
             Parent root = FXMLLoader.load(getClass().getResource("/view/MainForm.fxml"));
             Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();

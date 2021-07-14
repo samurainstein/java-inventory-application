@@ -90,19 +90,21 @@ public class MainFormController implements Initializable {
         allPartsTable.setItems(Inventory.getAllParts());
         allProductsTable.setItems(Inventory.getAllProducts());
         
-        /*
-        Test Data
         
-        Inventory.addPart(new InHouse(Inventory.getNextPartID(), "dart", .50, 5, 0, 10, 101));
-        Inventory.addPart(new InHouse(Inventory.getNextPartID(), "mart", .50, 5, 0, 10, 101));
-        Inventory.addPart(new Outsourced(Inventory.getNextPartID(), "cart", .50, 5, 0, 10, "company 1"));
-        Inventory.addPart(new Outsourced(Inventory.getNextPartID(), "starter", .50, 5, 0, 10, "company 2"));
+        //Test Data
+        if(Inventory.getAllParts().size() == 0) {
+            Inventory.addPart(new InHouse(Inventory.getNextPartID(), "dart", .50, 5, 0, 10, 101));
+            Inventory.addPart(new InHouse(Inventory.getNextPartID(), "mart", .50, 5, 0, 10, 101));
+            Inventory.addPart(new Outsourced(Inventory.getNextPartID(), "cart", .50, 5, 0, 10, "company 1"));
+            Inventory.addPart(new Outsourced(Inventory.getNextPartID(), "starter", .50, 5, 0, 10, "company 2"));
+        }
         
-        Inventory.addProduct(new Product(Inventory.getNextProductID(), "snare", .50, 5, 0, 10));
-        Inventory.addProduct(new Product(Inventory.getNextProductID(), "dare", .50, 5, 0, 10));
-        Inventory.addProduct(new Product(Inventory.getNextProductID(), "hare", .50, 5, 0, 10));
-        Inventory.addProduct(new Product(Inventory.getNextProductID(), "rare", .50, 5, 0, 10));
-        */
+        if(Inventory.getAllProducts().size() == 0) {
+            Inventory.addProduct(new Product(Inventory.getNextProductID(), "snare", .50, 5, 0, 10));
+            Inventory.addProduct(new Product(Inventory.getNextProductID(), "dare", .50, 5, 0, 10));
+            Inventory.addProduct(new Product(Inventory.getNextProductID(), "hare", .50, 5, 0, 10));
+            Inventory.addProduct(new Product(Inventory.getNextProductID(), "rare", .50, 5, 0, 10));
+        }
     }    
 
     @FXML
@@ -124,7 +126,6 @@ public class MainFormController implements Initializable {
             Parent root = loader.load();
             ModifyPartFormController modPartCont = loader.getController();
             modPartCont.passPartData(allPartsTable.getSelectionModel().getSelectedItem());
-            //Parent root = FXMLLoader.load(getClass().getResource("/view/ModifyPartForm.fxml"));
             Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setTitle("Modify Part Form");
@@ -141,28 +142,23 @@ public class MainFormController implements Initializable {
     
     @FXML
     private void onPartsDelete(ActionEvent event) {
-        //FIX THIS
         System.out.println("Delete part button clicked");
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this part?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if(result.isPresent() && result.get() == ButtonType.OK) { 
-        
-            Part selectedPart = allPartsTable.getSelectionModel().getSelectedItem();
-            
-            if (selectedPart == null){
+        Part selectedPart = allPartsTable.getSelectionModel().getSelectedItem();
+        if (selectedPart == null){
                 JOptionPane.showMessageDialog(null, "Please Select a Part");
                 return;
             }
-            
-            boolean deleteConfirm = Inventory.deletePart(selectedPart);
-            if(deleteConfirm)
-                JOptionPane.showMessageDialog(null, "Part was deleted");
-            /*
-            else if(!deleteConfirm){
-                JOptionPane.showMessageDialog(null, "Part not found");
-                return;
+        else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this part?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.isPresent() && result.get() == ButtonType.OK) { 
+                if(Inventory.deletePart(selectedPart)) {
+                    JOptionPane.showMessageDialog(null, "Selected part was deleted");
+                }
+                else if(!(Inventory.deletePart(selectedPart))) {
+                    JOptionPane.showMessageDialog(null, "No parts were deleted");
+                }
             }
-            */
         }
     }
     
@@ -185,7 +181,6 @@ public class MainFormController implements Initializable {
             Parent root = loader.load();
             ModifyProductFormController modProductCont = loader.getController();
             modProductCont.passProductData(allProductsTable.getSelectionModel().getSelectedItem());
-            //Parent root = FXMLLoader.load(getClass().getResource("/view/ModifyProductForm.fxml"));
             Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setTitle("Modify Products Form");
@@ -202,12 +197,28 @@ public class MainFormController implements Initializable {
     
     @FXML
     private void onProductsDelete(ActionEvent event) {
-        //FIX THIS
         System.out.println("Delete product button clicked");
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this product?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if(result.isPresent() && result.get() == ButtonType.OK) { 
-            
+        Product selectedProduct = allProductsTable.getSelectionModel().getSelectedItem();
+        if (selectedProduct == null){
+                JOptionPane.showMessageDialog(null, "Please Select a Part");
+                return;
+            }
+        
+        if (selectedProduct.getAllAssociatedParts().size() != 0) {
+            JOptionPane.showMessageDialog(null, "Please remove associated parts from product before deleting");
+            return;
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this product?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.isPresent() && result.get() == ButtonType.OK) { 
+                if(Inventory.deleteProduct(selectedProduct)) {
+                    JOptionPane.showMessageDialog(null, "Selected product was deleted");
+                }
+                else if(!(Inventory.deleteProduct(selectedProduct))) {
+                    JOptionPane.showMessageDialog(null, "No products were deleted");
+                }
+            }
         }
     }
 
@@ -219,10 +230,15 @@ public class MainFormController implements Initializable {
             allPartsTable.setItems(searchParts);
             
             if(searchParts.size() == 0) {
-                int partID = Integer.parseInt(searchText);
-                Part partIDSearch = Inventory.lookupPart(partID);
-                if(partIDSearch != null) {
-                    searchParts.add(partIDSearch);
+                try {
+                    int partID = Integer.parseInt(searchText);
+                    Part partIDSearch = Inventory.lookupPart(partID);
+                    if(partIDSearch != null) {
+                        searchParts.add(partIDSearch);
+                    }
+                }
+                catch(NumberFormatException exception){
+                    JOptionPane.showMessageDialog(null, "No parts were found");                   
                 }
             }
         }
@@ -236,16 +252,22 @@ public class MainFormController implements Initializable {
             allProductsTable.setItems(searchProduct);
             
             if(searchProduct.size() == 0) {
-                int productID = Integer.parseInt(searchText);
-                Product productIDSearch = Inventory.lookupProduct(productID);
-                if(productIDSearch != null) {
-                    searchProduct.add(productIDSearch);
+                try {
+                    int productID = Integer.parseInt(searchText);
+                    Product productIDSearch = Inventory.lookupProduct(productID);
+                    if(productIDSearch != null) {
+                        searchProduct.add(productIDSearch);
+                    }
+                }
+                catch(NumberFormatException exception) {
+                    JOptionPane.showMessageDialog(null, "No products were found");
                 }
             }
         }
     }
 
-
-    
-
+    @FXML
+    private void onExit(ActionEvent event) {
+        System.exit(0);
+    }
 }

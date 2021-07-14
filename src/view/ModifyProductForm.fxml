@@ -63,7 +63,7 @@
       <TextField fx:id="partSearchText" layoutX="599.0" layoutY="23.0" onKeyPressed="#onSearch" promptText="Search by part ID or name" />
       <Button layoutX="622.0" layoutY="248.0" mnemonicParsing="false" onAction="#onAdd" prefWidth="52.0" text="Add" />
       <Button layoutX="550.0" layoutY="473.0" mnemonicParsing="false" onAction="#onRemove" text="Remove Associated Part" />
-      <Button layoutX="550.0" layoutY="512.0" mnemonicParsing="false" prefWidth="52.0" text="Save" />
+      <Button layoutX="550.0" layoutY="512.0" mnemonicParsing="false" onAction="#onSave" prefWidth="52.0" text="Save" />
       <Button layoutX="642.0" layoutY="512.0" mnemonicParsing="false" onAction="#onCancel" prefWidth="52.0" text="Cancel" />
       <TableView fx:id="assocPartsTable" layoutX="392.0" layoutY="280.0" prefHeight="182.0" prefWidth="351.0">
          <columns>

@@ -98,6 +98,21 @@ public class AddPartFormController implements Initializable {
             int min = Integer.parseInt(addPartMinTF.getText());
             int max = Integer.parseInt(addPartMaxTF.getText()); 
             
+            if(max < min) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Entry");
+                alert.setContentText("Min should be less than max");
+                alert.showAndWait();
+                return;
+            }
+            if(stock > max || stock < min) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Entry");
+                alert.setContentText("Inventory amount must be between max and min");
+                alert.showAndWait();
+                return;
+            }
+            
             if(radioInHouse.isSelected()) {
                 int machID = Integer.parseInt(addPartMachOrCompTF.getText());
                 Inventory.addPart(new InHouse(ID, name, price, stock, min, max, machID));

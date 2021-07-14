@@ -7,6 +7,7 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javax.swing.JOptionPane;
 
 /**
  *This class contains all of the items in the inventory program, and the methods for 
@@ -121,9 +122,9 @@ public class Inventory {
      * @param partID A part ID to match the updated part to the existing part
      * @param selectedPart Part object with updated fields to copy to the matching existing part
      */
-    public static void updatePart(Integer partID, Part selectedPart){
+    public static void updatePart(Integer index, Part selectedPart){
         for(Part matchPart : allParts)
-            if(matchPart.getId() == partID) {
+            if(matchPart.getId() == index) {
                 matchPart = selectedPart;
             }
     }
@@ -132,9 +133,9 @@ public class Inventory {
      * @param productID A product ID to match the updated product to the existing product
      * @param newProduct Product object with updated fields to copy to the matching existing product
      */
-    public static void updateProduct(Integer productID, Product newProduct){
+    public static void updateProduct(Integer index, Product newProduct){
         for(Product matchProduct : allProducts)
-            if(matchProduct.getId() == productID) {
+            if(matchProduct.getId() == index) {
                 matchProduct = newProduct;
             }
     }
@@ -142,15 +143,15 @@ public class Inventory {
     /**Method for deleting a part. 
      * @param selectedPart The part to be deleted
      */
-    public static void deletePart(Part selectedPart){
-        allParts.remove(selectedPart);
+    public static boolean deletePart(Part selectedPart){
+        return allParts.remove(selectedPart);
     }
     
     /**Method for deleting a product. 
      * @param selectedProduct The product to be deleted
      */
-    public static void deleteProduct(Product selectedProduct){
-        allProducts.remove(selectedProduct);
+    public static boolean deleteProduct(Product selectedProduct){
+        return allProducts.remove(selectedProduct);
     }
     
     /**Method for returning all of the parts in the inventory. 
