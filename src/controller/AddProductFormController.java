@@ -149,7 +149,10 @@ public class AddProductFormController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to remove this part?");
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isPresent() && result.get() == ButtonType.OK) { 
-            product.deleteAssociatedPart(deleteAssociatedPart);
+            if(product.deleteAssociatedPart(deleteAssociatedPart))
+                return;
+            else if(!(product.deleteAssociatedPart(deleteAssociatedPart)))
+                JOptionPane.showMessageDialog(null, "No parts were removed");
         }     
     }
 
