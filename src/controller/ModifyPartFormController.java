@@ -69,26 +69,26 @@ public class ModifyPartFormController implements Initializable {
     }    
     
     //Members
-    private Part part1;
+    private Part passPart;
     
     //Methods
     public void passPartData(Part part) {
-        this.part1 = part;
-        modPartIDTF.setText(Integer.toString(part1.getId()));
-        modPartNameTF.setText(part1.getName());
-        modPartInvTF.setText(Integer.toString(part1.getStock()));
-        modPartPriceTF.setText(Double.toString(part1.getPrice()));
-        modPartMaxTF.setText(Integer.toString(part1.getMax()));
-        modPartMinTF.setText(Integer.toString(part1.getMin()));
+        passPart = part;
+        modPartIDTF.setText(Integer.toString(part.getId()));
+        modPartNameTF.setText(part.getName());
+        modPartInvTF.setText(Integer.toString(part.getStock()));
+        modPartPriceTF.setText(Double.toString(part.getPrice()));
+        modPartMaxTF.setText(Integer.toString(part.getMax()));
+        modPartMinTF.setText(Integer.toString(part.getMin()));
         
-        if(part1 instanceof InHouse) {
+        if(passPart instanceof InHouse) {
             radioInHouse.setSelected(true);
-            modPartMachCompTF.setText(String.valueOf(((InHouse)part1).getMachineID()));           
+            modPartMachCompTF.setText(String.valueOf(((InHouse)part).getMachineID()));           
         }
-        else if(part1 instanceof Outsourced) {
+        else if(passPart instanceof Outsourced) {
             machineOrCompany.setText("Company");
             radioOutsourced.setSelected(true);
-            modPartMachCompTF.setText(String.valueOf(((Outsourced)part1).getCompanyName()));
+            modPartMachCompTF.setText(String.valueOf(((Outsourced)part).getCompanyName()));
         }  
     }
 
@@ -115,12 +115,17 @@ public class ModifyPartFormController implements Initializable {
     @FXML
     private void onSave(ActionEvent event) throws IOException {
         try {
+            
             int partID = Integer.parseInt(modPartIDTF.getText());
             String name = modPartNameTF.getText();
             int stock = Integer.parseInt(modPartInvTF.getText());
             double price = Double.parseDouble(modPartPriceTF.getText());
             int max = Integer.parseInt(modPartMaxTF.getText());
             int min = Integer.parseInt(modPartMinTF.getText());
+            int machineID;
+            String companyName;
+            
+            int index = Inventory.getAllParts().indexOf(passPart);
 
             if(max < min) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -138,28 +143,17 @@ public class ModifyPartFormController implements Initializable {
                 return;
             }
 
-            part1.setName(name);
-            part1.setStock(stock);
-            part1.setPrice(price);
-            part1.setMax(max);
-            part1.setMin(min);
-            if(part1 instanceof InHouse) {
-                ((InHouse)part1).setMachineID(Integer.parseInt(modPartMachCompTF.getText()));         
-            }
-            else if(part1 instanceof Outsourced) {
-                ((Outsourced)part1).setCompanyName(modPartMachCompTF.getText());
-            }
-
-            /*FIX THIS
             if(radioInHouse.isSelected()) {
-                ((InHouse)part1).setMachineID(Integer.parseInt(modPartMachCompTF.getText()));         
+                machineID = (Integer.parseInt(modPartMachCompTF.getText()));
+                Part updatePart = new InHouse(partID, name, price, stock, min, max, machineID);
+                Inventory.updatePart(index, updatePart);         
             }
             else if(radioOutsourced.isSelected()) {
-                ((Outsourced)part1).setCompanyName(modPartMachCompTF.getText());
+                companyName = modPartMachCompTF.getText();
+                Part updatePart = new Outsourced(partID, name, price, stock, min, max, companyName);
+                Inventory.updatePart(index, updatePart);            
             }  
-            */
-            Inventory.updatePart(partID, part1);
-
+            
             Parent root = FXMLLoader.load(getClass().getResource("/view/MainForm.fxml"));
             Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);

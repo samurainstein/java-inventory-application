@@ -119,29 +119,24 @@ public class Inventory {
     }
     
     /**Method for updating an existing part. 
-     * @param partID A part ID to match the updated part to the existing part
+     * @param index Index of existing part that will be updated
      * @param selectedPart Part object with updated fields to copy to the matching existing part
      */
-    public static void updatePart(Integer index, Part selectedPart){
-        for(Part matchPart : allParts)
-            if(matchPart.getId() == index) {
-                matchPart = selectedPart;
-            }
+    public static void updatePart(int index, Part selectedPart){
+        allParts.set(index, selectedPart);
     }
     
     /**Method for updating an existing product. 
-     * @param productID A product ID to match the updated product to the existing product
+     * @param index Index of existing product that will be updated
      * @param newProduct Product object with updated fields to copy to the matching existing product
      */
-    public static void updateProduct(Integer index, Product newProduct){
-        for(Product matchProduct : allProducts)
-            if(matchProduct.getId() == index) {
-                matchProduct = newProduct;
-            }
+    public static void updateProduct(int index, Product newProduct){
+        allProducts.set(index, newProduct);
     }
     
     /**Method for deleting a part. 
      * @param selectedPart The part to be deleted
+     * @return Returns a boolean value verifying if the part was deleted
      */
     public static boolean deletePart(Part selectedPart){
         return allParts.remove(selectedPart);
@@ -149,6 +144,7 @@ public class Inventory {
     
     /**Method for deleting a product. 
      * @param selectedProduct The product to be deleted
+     * @return Returns a boolean value verifying if the product was deleted
      */
     public static boolean deleteProduct(Product selectedProduct){
         return allProducts.remove(selectedProduct);

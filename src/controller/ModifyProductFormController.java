@@ -97,22 +97,20 @@ public class ModifyProductFormController implements Initializable {
     }  
     
     //Members
-    private Product product1 = new Product(0, "", 0, 0, 0, 0);
+    private Product passProduct = new Product(0, "", 0, 0, 0, 0);
     private ObservableList<Part> assocParts = FXCollections.observableArrayList();
     
     //Methods
     public void passProductData(Product product) {
-            //product1 = product;
+            passProduct = product;
             modProductIDTF.setText(Integer.toString(product.getId()));
             modProductNameTF.setText(product.getName());
             modProductInvTF.setText(Integer.toString(product.getStock()));
             modProductPriceTF.setText(Double.toString(product.getPrice()));
             modProductMaxTF.setText(Integer.toString(product.getMax()));
             modProductMinTF.setText(Integer.toString(product.getMin()));
-            assocParts = product.getAllAssociatedParts();
-            for(Part part : assocParts) {
-                product1.addAssociatedPart(part);
-            }
+            assocParts.removeAll(); //Just in case
+            assocParts.setAll(product.getAllAssociatedParts());
             assocPartsTable.setItems(assocParts);
     }
     
@@ -151,8 +149,7 @@ public class ModifyProductFormController implements Initializable {
     @FXML
     private void onAdd(ActionEvent event) {
         Part addAssociatedPart = allPartsTable.getSelectionModel().getSelectedItem();
-        product1.addAssociatedPart(addAssociatedPart);
-        assocPartsTable.setItems(product1.getAllAssociatedParts());
+        assocParts.add(addAssociatedPart);
     }
 
     @FXML
@@ -164,17 +161,13 @@ public class ModifyProductFormController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to remove this part?");
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isPresent() && result.get() == ButtonType.OK) { 
-            if(product1.deleteAssociatedPart(deleteAssociatedPart))
-                return;
-            else if(!(product1.deleteAssociatedPart(deleteAssociatedPart)))
-                JOptionPane.showMessageDialog(null, "No parts were removed");
+            assocParts.remove(deleteAssociatedPart);
         }
             
     }
 
     @FXML
     private void onSave(ActionEvent event) throws IOException {
-        //FIX THIS
         try {
             int productID = Integer.parseInt(modProductIDTF.getText());
             String name = modProductNameTF.getText();
@@ -198,14 +191,14 @@ public class ModifyProductFormController implements Initializable {
                 alert.showAndWait();
                 return;
             }
+            
+            Product newProduct = new Product(productID, name, price, stock, min, max);
+            for(Part assocPart : assocParts)
+                newProduct.addAssociatedPart(assocPart);
+            
+            int index = Inventory.getAllProducts().indexOf(passProduct);
 
-            product1.setName(name);
-            product1.setStock(stock);
-            product1.setPrice(price);
-            product1.setMax(max);
-            product1.setMin(min);
-
-            Inventory.updateProduct(productID, product1);
+            Inventory.updateProduct(index, newProduct);
 
             Parent root = FXMLLoader.load(getClass().getResource("/view/MainForm.fxml"));
             Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();

@@ -136,6 +136,7 @@ public class Product {
     
     /**Method for deleting an associated part from a product. 
      * @param selectedAssociatedPart The part to be deleted from the product
+     * @return Returns a boolean value verifying if the associated part was deleted
      */
     public boolean deleteAssociatedPart(Part selectedAssociatedPart) {
         return associatedParts.remove(selectedAssociatedPart);
